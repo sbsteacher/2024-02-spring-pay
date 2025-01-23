@@ -12,13 +12,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringRunner;
+
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
@@ -56,25 +52,27 @@ class FeedLikeControllerTest {
         feedLikeToggle(0);
     }
 
-
     private void feedLikeToggle(final int result) throws Exception {
         FeedLikeReq givenParam = getGivenParam();
-
         given(feedLikeService.feedLikeToggle(givenParam)).willReturn(result);
 
-        ResultActions resultActions = mockMvc.perform(get(BASE_URL).queryParams(getParameter()));
+        ResultActions resultActions = mockMvc.perform(  get(BASE_URL).queryParams(getParameter())  );
 
         String expectedResJson = getExpectedResJson(result);
         resultActions.andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().json(expectedResJson));
+                     .andExpect(status().isOk())
+                     .andExpect(content().json(expectedResJson));
 
         verify(feedLikeService).feedLikeToggle(givenParam);
     }
     private MultiValueMap<String, String> getParameter() {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>(1);
         queryParams.add("feedId", String.valueOf(feedId_2));
+        queryParams.add("key", "value");
+        queryParams.add("name", "hong");
         return queryParams;
+
+        //?feedId=2&key=value&name=hong
     }
 
     private FeedLikeReq getGivenParam() {
