@@ -1,31 +1,31 @@
 package com.green.greengram.feed.comment;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.green.greengram.common.MyFileUtils;
 import com.green.greengram.common.model.ResultResponse;
 import com.green.greengram.feed.comment.model.FeedCommentDto;
 import com.green.greengram.feed.comment.model.FeedCommentGetReq;
 import com.green.greengram.feed.comment.model.FeedCommentGetRes;
-import com.green.greengram.feed.like.FeedLikeController;
+import com.green.greengram.feed.comment.model.FeedCommentPostReq;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,17 +42,47 @@ class FeedCommentControllerTest {
     final long feedId_2 = 2L;
     final long feedCommentId_3 = 3L;
     final long writerUserId_4 = 4L;
+    final int SIZE = 20;
+    final String BASE_URL = "/api/feed/comment";
 
     @Test
+    @DisplayName("피드 댓글 등록 테스트")
+    void postFeedComment() throws Exception {
+        FeedCommentPostReq givenParam = new FeedCommentPostReq();
+        givenParam.setFeedId(feedId_2);
+        givenParam.setComment("코멘트");
+
+        given(feedCommentService.postFeedComment(givenParam)).willReturn(feedCommentId_3);
+
+        String paramJson = objectMapper.writeValueAsString(givenParam);
+
+        ResultActions resultActions = mockMvc.perform( post(BASE_URL).contentType(MediaType.APPLICATION_JSON)
+                                                                     .content(paramJson) );
+
+        ResultResponse res = ResultResponse.<Long>builder()
+                .resultMessage("댓글 등록 완료")
+                .resultData(feedCommentId_3)
+                .build();
+        String expectedResJson = objectMapper.writeValueAsString(res);
+
+        resultActions.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedResJson));
+
+        verify(feedCommentService).postFeedComment(givenParam);
+    }
+
+    @Test
+    @DisplayName("피드 댓글 리스트 테스트")
     void getFeedComment() throws Exception {
-        final String URL = "/api/feed/comment";
+
         //?key1=value1&key2=value2&key3=value3
         //3개
         //feedId=2&startIdx=1&size=10
         //feedId=2&startIdx=1
         //feed_id=2&start_idx=1&size=20
 
-        FeedCommentGetReq givenParam = new FeedCommentGetReq(feedId_2, 1, 20);
+        FeedCommentGetReq givenParam = new FeedCommentGetReq(feedId_2, 1, SIZE);
 
         FeedCommentDto feedCommentDto = new FeedCommentDto();
         feedCommentDto.setFeedId(feedId_2);
@@ -69,24 +99,31 @@ class FeedCommentControllerTest {
         //service.getFeedComment에 임무부여
         given(feedCommentService.getFeedComment(givenParam)).willReturn(expectedResult);
 
+        ResultActions resultActions = mockMvc.perform(get(BASE_URL).queryParams(  getParameter(givenParam)  ));
 
-        ResultActions resultActions = mockMvc.perform(get(URL).queryParams(  getParameter(givenParam)  ));
+        String expectedResJson = getExpectedResJson(expectedResult);
+        resultActions.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedResJson));
 
-        //String expectedResJson = getExpectedResJson( ?? );
-
-
+        verify(feedCommentService).getFeedComment(givenParam);
     }
     private MultiValueMap<String, String> getParameter(FeedCommentGetReq givenParam) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
         queryParams.add("feed_id", String.valueOf(givenParam.getFeedId()));
         queryParams.add("start_idx", String.valueOf(givenParam.getStartIdx()));
-        queryParams.add("size", String.valueOf(givenParam.getSize()));
+        queryParams.add("size", String.valueOf(SIZE));
         return queryParams;
 
         //?feedId=2&key=value&name=hong
     }
 
-    private String getExpectedResJson() throws Exception {
-       return null;
+    private String getExpectedResJson(FeedCommentGetRes res) throws Exception {
+        ResultResponse resultResponse = ResultResponse.<FeedCommentGetRes>builder()
+                .resultMessage(String.format("%d rows", res.getCommentList().size()))
+                .resultData(res)
+                .build();
+
+       return objectMapper.writeValueAsString(resultResponse);
     }
 }

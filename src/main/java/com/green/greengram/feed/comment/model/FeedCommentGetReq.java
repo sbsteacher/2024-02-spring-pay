@@ -35,5 +35,7 @@ public class FeedCommentGetReq {
         this.feedId = feedId;
         this.startIdx = startIdx;
         this.size = (size == null ? Constants.getDefault_page_size() : size) + 1;
+        //moreComment 때문에 댓글 하나는 더 가져오는 것 때문 + 1
+        //댓글더보기 버튼이 계속 나올 수 있게 항상 하나씩 더 가져오고 더 있으면 isMoreComment=true로 변경하고 마지막 댓글은 삭제해서 리턴
     }
 }
