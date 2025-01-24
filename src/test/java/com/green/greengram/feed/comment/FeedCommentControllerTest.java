@@ -2,10 +2,7 @@ package com.green.greengram.feed.comment;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.greengram.common.model.ResultResponse;
-import com.green.greengram.feed.comment.model.FeedCommentDto;
-import com.green.greengram.feed.comment.model.FeedCommentGetReq;
-import com.green.greengram.feed.comment.model.FeedCommentGetRes;
-import com.green.greengram.feed.comment.model.FeedCommentPostReq;
+import com.green.greengram.feed.comment.model.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +21,7 @@ import java.util.List;
 import static org.mockito.BDDMockito.given;
 
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -125,5 +121,25 @@ class FeedCommentControllerTest {
                 .build();
 
        return objectMapper.writeValueAsString(resultResponse);
+    }
+
+    @Test
+    @DisplayName("피드 댓글 삭제")
+    void delFeedComment() throws Exception {
+        final int RESULT = 3;
+        FeedCommentDelReq givenParam = new FeedCommentDelReq(feedCommentId_3);
+        given(feedCommentService.delFeedComment(givenParam)).willReturn(RESULT);
+
+        ResultActions resultActions = mockMvc.perform( delete(BASE_URL).queryParam("feed_comment_id", String.valueOf(feedCommentId_3)) );
+
+        String expectedResJson = objectMapper.writeValueAsString(ResultResponse.<Integer>builder()
+                                                                .resultMessage("댓글 삭제가 완료되었습니다.")
+                                                                .resultData(RESULT)
+                                                                .build());
+        resultActions.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedResJson));
+
+        verify(feedCommentService).delFeedComment(givenParam);
     }
 }
