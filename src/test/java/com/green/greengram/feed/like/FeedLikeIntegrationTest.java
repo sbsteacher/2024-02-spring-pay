@@ -1,6 +1,7 @@
 package com.green.greengram.feed.like;
 
 import com.green.greengram.BaseIntegrationTest;
+import com.green.greengram.WithAuthUser;
 import org.junit.jupiter.api.*;
 import org.springframework.test.web.servlet.ResultActions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -9,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@WithAuthUser
 public class FeedLikeIntegrationTest extends BaseIntegrationTest {
     final String BASE_URL = "/api/feed/like";
     FeedLikeTestCommon common;
