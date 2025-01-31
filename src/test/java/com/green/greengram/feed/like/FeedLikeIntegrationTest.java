@@ -3,6 +3,7 @@ package com.green.greengram.feed.like;
 import com.green.greengram.BaseIntegrationTest;
 import com.green.greengram.WithAuthUser;
 import org.junit.jupiter.api.*;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.ResultActions;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
