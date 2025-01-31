@@ -12,7 +12,7 @@ public class User extends UpdatedAt {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto_increment
     private Long userId;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 30, unique = true)
     private String uid;
 
     @Column(nullable = false, length = 100)

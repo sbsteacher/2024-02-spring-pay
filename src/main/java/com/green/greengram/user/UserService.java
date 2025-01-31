@@ -71,15 +71,16 @@ public class UserService {
     }
 
     public UserSignInRes postSignIn(UserSignInReq p, HttpServletResponse response) {
-        UserSignInRes res = mapper.selUserByUid(p.getUid());
-        if( res == null || !passwordEncoder.matches(p.getUpw(), res.getUpw())) {
+        User user = userRepository.findByUid(p.getUid());
+//        UserSignInRes res = mapper.selUserByUid(p.getUid());
+        if( user == null || !passwordEncoder.matches(p.getUpw(), user.getUpw()) ) {
             throw new CustomException(UserErrorCode.INCORRECT_ID_PW);
         }
         /*
         JWT 토큰 생성 2개? AccessToken(20분), RefreshToken(15일)
          */
         JwtUser jwtUser = new JwtUser();
-        jwtUser.setSignedUserId(res.getUserId());
+        jwtUser.setSignedUserId(user.getUserId());
         jwtUser.setRoles(new ArrayList<>(2));
 
         jwtUser.getRoles().add("ROLE_USER");
@@ -92,9 +93,10 @@ public class UserService {
         int maxAge = 1_296_000; //15 * 24 * 60 * 60, 15일의 초(second)값
         cookieUtils.setCookie(response, "refreshToken", refreshToken, maxAge);
 
-        res.setMessage("로그인 성공");
-        res.setAccessToken(accessToken);
-        return res;
+        return new UserSignInRes(user.getUserId()
+                , user.getNickName()
+                , user.getPic()
+                , accessToken);
     }
 
     public UserInfoGetRes getUserInfo(UserInfoGetReq p) {
