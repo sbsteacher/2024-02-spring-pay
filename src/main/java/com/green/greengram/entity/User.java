@@ -23,4 +23,5 @@ public class User extends UpdatedAt {
 
     @Column(length = 50)
     private String pic;
+
 }

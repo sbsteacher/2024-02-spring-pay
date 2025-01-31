@@ -23,7 +23,9 @@ spring:
     password: green502
   jackson:
     default-property-inclusion: non_null #응답 JSON을 만들 때 null인 속성은 제외한다.
-
+  sql:
+    init:
+      mode: always
   jpa:
     database: mysql
     hibernate:
