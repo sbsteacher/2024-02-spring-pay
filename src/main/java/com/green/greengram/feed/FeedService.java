@@ -268,18 +268,26 @@ public class FeedService {
 
     @Transactional
     public int deleteFeed(FeedDeleteReq p) {
-        p.setSignedUserId(authenticationFacade.getSignedUserId());
-        //피드 댓글, 좋아요, 사진 삭제
-        int affectedRowsEtc = feedMapper.delFeedLikeAndFeedCommentAndFeedPic(p);
-        log.info("deleteFeed > affectedRows: {}", affectedRowsEtc);
 
-        //피드 삭제
-        int affectedRowsFeed = feedMapper.delFeed(p);
-        log.info("deleteFeed > affectedRowsFeed: {}", affectedRowsFeed);
+        User signedUser = new User();
+        signedUser.setUserId(authenticationFacade.getSignedUserId());
+        Feed feed = feedRepository.findByFeedIdAndWriterUser(p.getFeedId(), signedUser)
+                                  .orElseThrow(RuntimeException::new);
+        feedRepository.delete(feed);
 
-        //피드 사진 삭제 (폴더 삭제)
-        String deletePath = String.format("%s/feed/%d", myFileUtils.getUploadPath(), p.getFeedId());
-        myFileUtils.deleteFolder(deletePath, true);
+
+//        p.setSignedUserId(authenticationFacade.getSignedUserId());
+//        //피드 댓글, 좋아요, 사진 삭제
+//        int affectedRowsEtc = feedMapper.delFeedLikeAndFeedCommentAndFeedPic(p);
+//        log.info("deleteFeed > affectedRows: {}", affectedRowsEtc);
+//
+//        //피드 삭제
+//        int affectedRowsFeed = feedMapper.delFeed(p);
+//        log.info("deleteFeed > affectedRowsFeed: {}", affectedRowsFeed);
+//
+//        //피드 사진 삭제 (폴더 삭제)
+//        String deletePath = String.format("%s/feed/%d", myFileUtils.getUploadPath(), p.getFeedId());
+//        myFileUtils.deleteFolder(deletePath, true);
 
         return 1;
     }
