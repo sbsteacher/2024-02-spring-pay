@@ -80,10 +80,10 @@ public class FeedController {
     @Operation(summary = "Feed 삭제", description = "피드의 댓글, 좋아요 모두 삭제 처리")
     public ResultResponse<Integer> deleteFeed(@ParameterObject @ModelAttribute FeedDeleteReq p) {
         log.info("FeedController > deleteFeed > p: {}", p);
-        int result = service.deleteFeed(p);
+        service.deleteFeed(p);
         return ResultResponse.<Integer>builder()
                 .resultMessage("피드가 삭제되었습니다.")
-                .resultData(result)
+                .resultData(1)
                 .build();
     }
 }
