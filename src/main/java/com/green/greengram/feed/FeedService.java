@@ -13,7 +13,6 @@ import com.green.greengram.feed.comment.model.FeedCommentDto;
 import com.green.greengram.feed.comment.model.FeedCommentGetReq;
 import com.green.greengram.feed.comment.model.FeedCommentGetRes;
 import com.green.greengram.feed.model.*;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -271,10 +270,16 @@ public class FeedService {
 
         User signedUser = new User();
         signedUser.setUserId(authenticationFacade.getSignedUserId());
-        Feed feed = feedRepository.findByFeedIdAndWriterUser(p.getFeedId(), signedUser)
-                                  .orElseThrow(() -> new CustomException(FeedErrorCode.FAIL_TO_DEL));
-        feedRepository.delete(feed);
+//        Feed feed = feedRepository.findByFeedIdAndWriterUser(p.getFeedId(), signedUser)
+//                                  .orElseThrow(() -> new CustomException(FeedErrorCode.FAIL_TO_DEL));
+//        feedRepository.delete(feed);
 
+        //int affectedRows = feedRepository.deleteByFeedIdAndWriterUser(p.getFeedId(), signedUser);
+        int affectedRows = feedRepository.deleteFeed(p.getFeedId(), authenticationFacade.getSignedUserId());
+        log.info("affectedRows: {}", affectedRows);
+        if(affectedRows == 0) {
+            throw new CustomException(FeedErrorCode.FAIL_TO_DEL);
+        }
 
 //        p.setSignedUserId(authenticationFacade.getSignedUserId());
 //        //피드 댓글, 좋아요, 사진 삭제
