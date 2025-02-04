@@ -269,10 +269,12 @@ public class FeedService {
     public void deleteFeed(FeedDeleteReq p) {
 
         User signedUser = new User();
+
         signedUser.setUserId(authenticationFacade.getSignedUserId());
 //        Feed feed = feedRepository.findByFeedIdAndWriterUser(p.getFeedId(), signedUser)
 //                                  .orElseThrow(() -> new CustomException(FeedErrorCode.FAIL_TO_DEL));
 //        feedRepository.delete(feed);
+
 
         //int affectedRows = feedRepository.deleteByFeedIdAndWriterUser(p.getFeedId(), signedUser);
         int affectedRows = feedRepository.deleteFeed(p.getFeedId(), authenticationFacade.getSignedUserId());
@@ -290,9 +292,9 @@ public class FeedService {
 //        int affectedRowsFeed = feedMapper.delFeed(p);
 //        log.info("deleteFeed > affectedRowsFeed: {}", affectedRowsFeed);
 //
-//        //피드 사진 삭제 (폴더 삭제)
-//        String deletePath = String.format("%s/feed/%d", myFileUtils.getUploadPath(), p.getFeedId());
-//        myFileUtils.deleteFolder(deletePath, true);
+        //피드 사진 삭제 (폴더 삭제)
+        String deletePath = String.format("%s/feed/%d", myFileUtils.getUploadPath(), p.getFeedId());
+        myFileUtils.deleteFolder(deletePath, true);
 
     }
 }
