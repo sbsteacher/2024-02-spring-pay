@@ -124,7 +124,7 @@ class FeedCommentControllerTest {
     void delFeedComment() throws Exception {
         final int RESULT = 3;
         FeedCommentDelReq givenParam = new FeedCommentDelReq(feedCommentId_3);
-        given(feedCommentService.delFeedComment(givenParam)).willReturn(RESULT);
+        //given(feedCommentService.delFeedComment(givenParam)).willReturn(RESULT);
 
         ResultActions resultActions = mockMvc.perform( delete(BASE_URL).queryParam("feed_comment_id", String.valueOf(feedCommentId_3)) );
 

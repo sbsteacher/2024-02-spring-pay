@@ -23,6 +23,10 @@ spring:
     password: green502
   jackson:
     default-property-inclusion: non_null #응답 JSON을 만들 때 null인 속성은 제외한다.
+#    date-format: "yyyy-MM-dd HH:mm:ss"
+#    serialization:
+#        write-dates-as-timestamps: false
+
   sql:
     init:
       mode: always
