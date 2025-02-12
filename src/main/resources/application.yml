@@ -26,6 +26,47 @@ spring:
 #    date-format: "yyyy-MM-dd HH:mm:ss"
 #    serialization:
 #        write-dates-as-timestamps: false
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: a
+            client-secret: a
+            scope:
+              - email
+              - profile
+          kakao:
+            client-name: Kakao
+            client-id: a
+            client-secret: a
+            client-authentication-method: client_secret_post #client-id, client-secret 쿼리스트링으로 날아가야 한다.
+            authorization-grant-type: authorization_code #권한부여 유형 (인가코드 > access-token 받는 방식 선택)
+            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+                          # baseUrl: 서버가 돌아가고 있는 host
+                          # action: login
+                          # registrationId: kakao
+                          # 결과: localhost:8080/login/oauth2/code/kakao
+            scope:
+              - profile_nickname
+              - profile_image
+
+          naver:
+            client-name: Kakao
+            client-id: a
+            client-secret: a
+            client-authentication-method: client_secret_post #client-id, client-secret 쿼리스트링으로 날아가야 한다.
+            authorization-grant-type: authorization_code #권한부여 유형 (인가코드 > access-token 받는 방식 선택)
+            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+              # baseUrl: 서버가 돌아가고 있는 host
+              # action: login
+            # registrationId: kakao
+            # 결과: localhost:8080/login/oauth2/code/kakao
+            scope:
+              - profile_nickname
+              - profile_image
+
+
 
   sql:
     init:
@@ -40,7 +81,7 @@ spring:
         jdbc:
           batch_size: 50
         format_sql: true #로그 찍을 때 보기편하게 포맷팅
-        order_updates: true #JPA Batch 작업 활성화
+        order_updates: true
     show-sql: true #JPA가 만든 쿼리문 로그에 출력
 
   servlet:

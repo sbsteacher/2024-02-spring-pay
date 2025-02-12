@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface FeedRepository extends JpaRepository<Feed, Long> {
+    //쿼리 메소드
     Optional<Feed> findByFeedIdAndWriterUser(Long feedId, User writerUser);
 
     //쿼리 메소드로 delete, update는 비추천
@@ -21,6 +22,12 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
     @Modifying //이 애노테이션이 있어야 delete or update JPQL, 리턴타입은 void or int
     @Query("delete from Feed f where f.feedId=:feedId AND f.writerUser.userId=:writerUserId")
     int deleteFeed(Long feedId, Long writerUserId);
+
+
+    @Modifying
+    @Query(value="delete from feed f where f.feed_id=:feedId and f.writer_user_id=:writerUserId"
+            , nativeQuery = true)
+    int deleteFeedSql(Long feedId, Long writerUserId);
     /*
     Feed (대문자로 시작) - 클래스명 작성해야 함
 

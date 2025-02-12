@@ -12,12 +12,12 @@ public class FeedLike extends CreatedAt {
     private FeedLikeIds feedLikeIds;
 
     @ManyToOne
-    @MapsId("feedId")
     @JoinColumn(name = "feed_id")
+    @MapsId("feedId")
     private Feed feed;
 
     @ManyToOne
-    @MapsId("userId")
     @JoinColumn(name = "user_id")
+    @MapsId("userId")
     private User user;
 }

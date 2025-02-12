@@ -10,7 +10,7 @@ import lombok.Setter;
 public class User extends UpdatedAt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto_increment
-    private Long userId;
+    private Long userId; // user_id
 
     @Column(nullable = false, length = 30, unique = true)
     private String uid;
@@ -19,7 +19,7 @@ public class User extends UpdatedAt {
     private String upw;
 
     @Column(length = 30)
-    private String nickName;
+    private String nickName; //nick_name
 
     @Column(length = 50)
     private String pic;

@@ -18,4 +18,6 @@ public class FeedPic extends CreatedAt {
     @JoinColumn(name = "feed_id")
     @OnDelete(action = OnDeleteAction.CASCADE) //단방향 상태에서 on delete cascade(DDL) 설정
     private Feed feed;
+
+
 }
