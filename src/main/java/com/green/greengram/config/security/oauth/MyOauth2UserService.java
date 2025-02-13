@@ -1,16 +1,23 @@
 package com.green.greengram.config.security.oauth;
 
+import com.green.greengram.config.jwt.JwtUser;
+import com.green.greengram.config.security.MyUserDetails;
 import com.green.greengram.config.security.SignInProviderType;
 import com.green.greengram.config.security.oauth.userinfo.Oauth2UserInfo;
 import com.green.greengram.config.security.oauth.userinfo.Oauth2UserInfoFactory;
+import com.green.greengram.entity.User;
 import com.green.greengram.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.AuthenticationException;
+
+import java.util.ArrayList;
 
 @Slf4j
 @Service
@@ -20,8 +27,14 @@ public class MyOauth2UserService extends DefaultOAuth2UserService {
     private final Oauth2UserInfoFactory oauth2UserInfoFactory;
 
     @Override
-    public OAuth2User loadUser(OAuth2UserRequest req) throws OAuth2AuthenticationException {
-        return null;
+    public OAuth2User loadUser(OAuth2UserRequest req) {
+        try {
+            return process(req);
+        } catch (AuthenticationException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            throw new InternalAuthenticationServiceException(ex.getMessage(), ex.getCause());
+        }
     }
 
     private OAuth2User process(OAuth2UserRequest req) {
@@ -37,6 +50,25 @@ public class MyOauth2UserService extends DefaultOAuth2UserService {
         Oauth2UserInfo oauth2UserInfo = oauth2UserInfoFactory.getOauth2UserInfo(signInProviderType, oAuth2User.getAttributes());
 
         //기존에 회원가입이 되어있는지 체크
+        User user = userRepository.findByUidAndProviderType(oauth2UserInfo.getId(), signInProviderType);
+        if(user == null) { // 최초 로그인 상황 > 회원가입 처리
+            user = new User();
+            user.setUid(oauth2UserInfo.getId());
+            user.setProviderType(signInProviderType);
+            user.setUpw("");
+            user.setNickName(oauth2UserInfo.getName());
+            user.setPic(oauth2UserInfo.getProfileImageUrl());
+            userRepository.save(user);
+        }
+        JwtUser jwtUser = new JwtUser();
+        jwtUser.setSignedUserId(user.getUserId());
+        jwtUser.setRoles(new ArrayList<>(1));
+        jwtUser.getRoles().add("ROLE_USER");
+
+        MyUserDetails myUserDetails = new MyUserDetails();
+        myUserDetails.setJwtUser(jwtUser);
+
+        return myUserDetails;
     }
 }
 
