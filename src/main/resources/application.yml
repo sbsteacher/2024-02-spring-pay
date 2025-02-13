@@ -1,5 +1,19 @@
+global:
+  oauth2:
+    base-uri: /oauth2/authorization #FE 소셜로그인 요청할 때 사용할 주소값
+    # 플랫폼과 통신을 3번 정도 하는데 각 통신들이 하나의 작업을 위한 트랜잭션이라는 것을
+    # 연결시키기 위해 쿠키를 사용한다.
+    authorization-request-cookie-name: oauth2_auth_request
+    redirect-uri-param-cookie-name: redirect_uri
+    cookie-expiry-seconds: 180
+    authorized-redirect-uris:
+      - http://localhost:8080/fe/redirect
+      - http://192.168.0.144:8080/fe/redirect
+      - http://112.222.157.156:8080/fe/redirect
+
 const:
   default-page-size: 20
+
 
 file:
   directory: D:/2024-02/download/greengram_jpa
@@ -7,6 +21,8 @@ file:
 jwt:
   issuer: green@green.kr
   secret-key: DaeguGreenArtAcademyClass502RoomForJavaSpringBootFightingD23sdfsdf23FDSADFSDFDass502RoomForJavaSprinass502RoomForJavaSprin
+
+
 
 mybatis:
   configuration:
