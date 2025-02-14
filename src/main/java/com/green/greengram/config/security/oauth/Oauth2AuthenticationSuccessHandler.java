@@ -2,7 +2,9 @@ package com.green.greengram.config.security.oauth;
 
 import com.green.greengram.common.CookieUtils;
 import com.green.greengram.common.GlobalOauth2;
+import com.green.greengram.config.jwt.JwtUser;
 import com.green.greengram.config.jwt.TokenProvider;
+import com.green.greengram.config.security.MyUserDetails;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,6 +35,25 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String targetUrl = "";
         clearAuthenticationAttributes(req, res);
         getRedirectStrategy().sendRedirect(req, res, targetUrl); // "fe/redirect?access_token=dddd&user_id=12"
+    }
+
+    @Override
+    protected String determineTargetUrl(HttpServletRequest req, HttpServletResponse res, Authentication auth) {
+        String redirectUrl = cookieUtils.getValue(req, globalOauth2.getRedirectUriParamCookieName(), String.class);
+
+        log.info("determineTargetUrl > getDefaultTargetUrl(): {}", getDefaultTargetUrl());
+
+        String targetUrl = redirectUrl == null ? getDefaultTargetUrl() : redirectUrl;
+
+        //쿼리스트링 생성
+        MyUserDetails myUserDetails = (MyUserDetails) auth.getPrincipal();
+        JwtUser jwtUser = myUserDetails.getJwtUser();
+
+        //AT, RT 생성
+        String accessToken = "";
+        String refreshToken = "";
+
+        return null;
     }
 
     private void clearAuthenticationAttributes(HttpServletRequest req, HttpServletResponse res) {
