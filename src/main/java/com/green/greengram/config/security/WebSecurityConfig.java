@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -58,7 +59,7 @@ public class WebSecurityConfig {
                                               .userInfoEndpoint( userInfo -> userInfo.userService(myOauth2UserService) )
                                               .successHandler(oauth2AuthenticationSuccessHandler)
                                               .failureHandler(oauth2AuthenticationFailureHandler) )
-                .addFilterBefore(oauth2AuthenticationCheckRedirectUriFilter, Oauth2AuthenticationCheckRedirectUriFilter.class)
+                .addFilterBefore(oauth2AuthenticationCheckRedirectUriFilter, OAuth2AuthorizationRequestRedirectFilter.class)
                 .build();
     }
 
