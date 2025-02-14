@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.core.AuthenticationException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @Slf4j
 @Service
@@ -60,13 +61,14 @@ public class MyOauth2UserService extends DefaultOAuth2UserService {
             user.setPic(oauth2UserInfo.getProfileImageUrl());
             userRepository.save(user);
         }
-        JwtUser jwtUser = new JwtUser();
-        jwtUser.setSignedUserId(user.getUserId());
-        jwtUser.setRoles(new ArrayList<>(1));
-        jwtUser.getRoles().add("ROLE_USER");
+
+        OAuth2JwtUser oauth2jwtUser = new OAuth2JwtUser(user.getNickName()
+                                                      , user.getPic()
+                                                      , user.getUserId()
+                                                      , Arrays.asList("ROLE_USER"));
 
         MyUserDetails myUserDetails = new MyUserDetails();
-        myUserDetails.setJwtUser(jwtUser);
+        myUserDetails.setJwtUser(oauth2jwtUser);
 
         return myUserDetails;
     }
