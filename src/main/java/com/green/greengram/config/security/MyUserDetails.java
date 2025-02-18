@@ -40,7 +40,7 @@ public class MyUserDetails implements UserDetails, OAuth2User {
 
     @Override
     public String getUsername() {
-        return jwtUser == null ? "GUEST" : String.valueOf(jwtUser.getSignedUserId());
+        return "GUEST";
     }
 
     @Override

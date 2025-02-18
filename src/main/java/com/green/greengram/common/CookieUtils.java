@@ -1,8 +1,11 @@
 package com.green.greengram.common;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
@@ -11,7 +14,10 @@ import java.util.Base64;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class CookieUtils {
+    private final ObjectMapper objectMapper;
+
     //Req header에서 내가 원하는 쿠키를 찾는 메소드
     public Cookie getCookie(HttpServletRequest req, String name) {
         Cookie[] cookies = req.getCookies();
@@ -36,11 +42,20 @@ public class CookieUtils {
 
     //직렬화, 객체가 가지고 있는 값을 문자열로 변환
    private String serializeObject(Object obj) {
-        return Base64.getUrlEncoder().encodeToString( SerializationUtils.serialize(obj) );
+       return Base64.getUrlEncoder().encodeToString( SerializationUtils.serialize(obj) );
+//       try {
+//           return Base64.getUrlEncoder().encodeToString(objectMapper.writeValueAsString(obj).getBytes());
+//       } catch (JsonProcessingException e) {
+//           throw new RuntimeException(e);
+//       }
    }
 
     //역직렬화, 문자열값을 객체로 변환
     private <T> T deserializeCookie(Cookie cookie, Class<T> valueType) {
+//        String hashedJson = cookie.getValue();
+//        String json = new String(Base64.getUrlDecoder().decode(hashedJson));
+//        return objectMapper.convertValue(json, valueType);
+
         return valueType.cast(
                 SerializationUtils.deserialize( Base64.getUrlDecoder().decode(cookie.getValue()) )
         );

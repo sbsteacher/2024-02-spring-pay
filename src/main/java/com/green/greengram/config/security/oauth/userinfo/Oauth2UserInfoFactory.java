@@ -15,6 +15,8 @@ public class Oauth2UserInfoFactory {
     public Oauth2UserInfo getOauth2UserInfo(SignInProviderType signInProviderType, Map<String, Object> attributes) {
         return switch(signInProviderType) {
             case KAKAO -> new KakaoOAuth2UserInfo(attributes);
+            case NAVER -> new NaverOAuth2UserInfo(attributes);
+            case GOOGLE -> new GoogleOAuth2UserInfo(attributes);
             default -> null;
         };
     }
