@@ -18,7 +18,7 @@ constants:
     refresh-token-cookie-expiry: 1_296_000 #15일 (S)
   kakao-pay:
     authorization-name: Authorization
-    secret-key: DEV0A2C37B3D5C593158404BA2DEF241C594D526
+    secret-key: ${KAKAO_PAY.SECRET}
     cid: TC0ONETIME
     completed-url: http://localhost:8080/order/pay/completed
     fail-url: http://localhost:8080/order/pay/fail
