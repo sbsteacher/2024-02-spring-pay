@@ -1,6 +1,6 @@
 package com.green.greengram.config.security.oauth;
 
-import com.green.greengram.common.GlobalOauth2;
+import com.green.greengram.config.constants.ConstOAuth2;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +18,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class Oauth2AuthenticationCheckRedirectUriFilter extends OncePerRequestFilter {
 
-    private final GlobalOauth2 globalOauth2;
+    private final ConstOAuth2 constOAuth2;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -31,7 +31,7 @@ public class Oauth2AuthenticationCheckRedirectUriFilter extends OncePerRequestFi
          */
         String requestUri = request.getRequestURI();
         log.info("request uri: {}", requestUri);
-        if(requestUri.startsWith(globalOauth2.getBaseUri())) { //소셜로그인 요청한 것이라면
+        if(requestUri.startsWith(constOAuth2.getBaseUri())) { //소셜로그인 요청한 것이라면
             String redirectUri = request.getParameter("redirect_uri");
             if(redirectUri != null && !hasAuthorizedRedirectUri(redirectUri)) { //약속한 redirect_uri값이 아니었다면
                 String errRedirectUrl = UriComponentsBuilder.fromUriString("/err_message")
@@ -48,7 +48,7 @@ public class Oauth2AuthenticationCheckRedirectUriFilter extends OncePerRequestFi
 
     //약속한 redirect_uri가 맞는지 체크 없으면 false, 있으면 true 리턴
     private boolean hasAuthorizedRedirectUri(String redirectUri) {
-        for(String uri : globalOauth2.getAuthorizedRedirectUris()) {
+        for(String uri : constOAuth2.getAuthorizedRedirectUris()) {
             if(uri.equals(redirectUri)) {
                 return true;
             }

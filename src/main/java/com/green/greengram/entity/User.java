@@ -2,8 +2,10 @@ package com.green.greengram.entity;
 
 import com.green.greengram.config.security.SignInProviderType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity //테이블을 만들고 DML때 사용
 @Getter
@@ -15,6 +17,9 @@ import lombok.Setter;
                 )
         }
 )
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User extends UpdatedAt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto_increment
@@ -34,5 +39,8 @@ public class User extends UpdatedAt {
 
     @Column(length = 50)
     private String pic;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<UserRole> userRoles = new ArrayList<>();
 
 }

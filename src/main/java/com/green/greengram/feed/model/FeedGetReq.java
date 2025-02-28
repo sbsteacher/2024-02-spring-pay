@@ -1,7 +1,7 @@
 package com.green.greengram.feed.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.green.greengram.common.model.Paging;
+import com.green.greengram.config.model.Paging;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Positive;
 import lombok.EqualsAndHashCode;

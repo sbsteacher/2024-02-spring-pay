@@ -1,6 +1,6 @@
 package com.green.greengram.feed;
 
-import com.green.greengram.common.MyFileUtils;
+import com.green.greengram.config.MyFileUtils;
 import com.green.greengram.config.security.AuthenticationFacade;
 import com.green.greengram.feed.comment.FeedCommentMapper;
 import org.junit.jupiter.api.extension.ExtendWith;

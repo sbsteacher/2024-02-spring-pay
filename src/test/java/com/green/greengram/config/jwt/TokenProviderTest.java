@@ -34,7 +34,8 @@ class TokenProviderTest {
         jwtUser.setRoles(roles);
 
         //When (실행단계)
-        String token = tokenProvider.generateToken(jwtUser, Duration.ofHours(3));
+        //String token = tokenProvider.generateToken(jwtUser, Duration.ofHours(3));
+        String token = null;
 
         //Then (검증단계)
         assertNotNull(token);

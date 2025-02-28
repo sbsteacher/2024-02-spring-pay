@@ -1,7 +1,7 @@
 package com.green.greengram.feed.comment;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.green.greengram.common.model.ResultResponse;
+import com.green.greengram.config.model.ResultResponse;
 import com.green.greengram.feed.comment.model.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

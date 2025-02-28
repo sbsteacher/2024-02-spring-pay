@@ -1,7 +1,7 @@
 package com.green.greengram.config.security.oauth;
 
-import com.green.greengram.common.CookieUtils;
-import com.green.greengram.common.GlobalOauth2;
+import com.green.greengram.config.constants.ConstOAuth2;
+import com.green.greengram.config.CookieUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +17,12 @@ public class Oauth2AuthenticationRequestBasedOnCookieRepository
         implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
     private final CookieUtils cookieUtils;
-    private final GlobalOauth2 globalOauth2;
+    private final ConstOAuth2 constOAuth2;
 
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
         return cookieUtils.getValue(request
-                                  , globalOauth2.getAuthorizationRequestCookieName()
+                                  , constOAuth2.getAuthorizationRequestCookieName()
                                   , OAuth2AuthorizationRequest.class);
     }
 
@@ -32,17 +32,17 @@ public class Oauth2AuthenticationRequestBasedOnCookieRepository
             this.removeAuthorizationCookies(response);
         }
         cookieUtils.setCookie(response
-                            , globalOauth2.getAuthorizationRequestCookieName()
+                            , constOAuth2.getAuthorizationRequestCookieName()
                             , authorizationRequest
-                            , globalOauth2.getCookieExpirySeconds()
+                            , constOAuth2.getCookieExpirySeconds()
                             , "/");
 
         //FE 요청한 redirect_uri 쿠키에 저장한다.
-        String redirectUriAfterLogin = request.getParameter(globalOauth2.getRedirectUriParamCookieName());
+        String redirectUriAfterLogin = request.getParameter(constOAuth2.getRedirectUriParamCookieName());
         cookieUtils.setCookie(response
-                , globalOauth2.getRedirectUriParamCookieName()
+                , constOAuth2.getRedirectUriParamCookieName()
                 , redirectUriAfterLogin
-                , globalOauth2.getCookieExpirySeconds()
+                , constOAuth2.getCookieExpirySeconds()
                 , "/");
     }
 
@@ -52,7 +52,7 @@ public class Oauth2AuthenticationRequestBasedOnCookieRepository
     }
 
     public void removeAuthorizationCookies(HttpServletResponse response) {
-        cookieUtils.deleteCookie(response, globalOauth2.getAuthorizationRequestCookieName());
-        cookieUtils.deleteCookie(response, globalOauth2.getRedirectUriParamCookieName());
+        cookieUtils.deleteCookie(response, constOAuth2.getAuthorizationRequestCookieName());
+        cookieUtils.deleteCookie(response, constOAuth2.getRedirectUriParamCookieName());
     }
 }

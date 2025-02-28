@@ -1,13 +1,7 @@
 package com.green.greengram.feed.like;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.green.greengram.common.model.ResultResponse;
-import com.green.greengram.config.jwt.JwtProperties;
-import com.green.greengram.config.jwt.TokenAuthenticationFilter;
-import com.green.greengram.config.jwt.TokenProvider;
-import com.green.greengram.config.security.WebSecurityConfig;
 import com.green.greengram.feed.like.model.FeedLikeReq;
-import org.apache.catalina.security.SecurityConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,10 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

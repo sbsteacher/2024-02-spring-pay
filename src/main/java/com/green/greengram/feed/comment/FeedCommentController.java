@@ -1,6 +1,6 @@
 package com.green.greengram.feed.comment;
 
-import com.green.greengram.common.model.ResultResponse;
+import com.green.greengram.config.model.ResultResponse;
 import com.green.greengram.feed.comment.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

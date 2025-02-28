@@ -19,5 +19,4 @@ public class FeedPic extends CreatedAt {
     @OnDelete(action = OnDeleteAction.CASCADE) //단방향 상태에서 on delete cascade(DDL) 설정
     private Feed feed;
 
-
 }

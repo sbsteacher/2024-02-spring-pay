@@ -1,8 +1,8 @@
 package com.green.greengram.feed;
 
-import com.green.greengram.common.MyFileUtils;
-import com.green.greengram.common.exception.CustomException;
-import com.green.greengram.common.exception.FeedErrorCode;
+import com.green.greengram.config.MyFileUtils;
+import com.green.greengram.config.exception.CustomException;
+import com.green.greengram.config.exception.FeedErrorCode;
 import com.green.greengram.config.security.AuthenticationFacade;
 import com.green.greengram.entity.Feed;
 import com.green.greengram.entity.FeedPic;

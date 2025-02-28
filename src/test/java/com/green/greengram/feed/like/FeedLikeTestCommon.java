@@ -1,19 +1,15 @@
 package com.green.greengram.feed.like;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.green.greengram.common.model.ResultResponse;
+import com.green.greengram.config.model.ResultResponse;
 import com.green.greengram.feed.like.model.FeedLikeReq;
 import lombok.RequiredArgsConstructor;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RequiredArgsConstructor
 public class FeedLikeTestCommon {

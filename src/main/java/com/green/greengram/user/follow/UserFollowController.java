@@ -1,6 +1,6 @@
 package com.green.greengram.user.follow;
 
-import com.green.greengram.common.model.ResultResponse;
+import com.green.greengram.config.model.ResultResponse;
 import com.green.greengram.user.follow.model.UserFollowReq;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,9 +1,9 @@
 package com.green.greengram.user;
 
-import com.green.greengram.common.CookieUtils;
-import com.green.greengram.common.MyFileUtils;
-import com.green.greengram.common.exception.CustomException;
-import com.green.greengram.common.exception.UserErrorCode;
+import com.green.greengram.config.CookieUtils;
+import com.green.greengram.config.MyFileUtils;
+import com.green.greengram.config.exception.CustomException;
+import com.green.greengram.config.exception.UserErrorCode;
 import com.green.greengram.config.jwt.JwtUser;
 import com.green.greengram.config.jwt.TokenProvider;
 import com.green.greengram.config.security.AuthenticationFacade;
@@ -88,8 +88,8 @@ public class UserService {
         jwtUser.getRoles().add("ROLE_USER");
         jwtUser.getRoles().add("ROLE_ADMIN");
 
-        String accessToken = tokenProvider.generateToken(jwtUser, Duration.ofHours(8));
-        String refreshToken = tokenProvider.generateToken(jwtUser, Duration.ofDays(15));
+        String accessToken = tokenProvider.generateAccessToken(jwtUser);
+        String refreshToken = tokenProvider.generateRefreshToken(jwtUser);
 
         //refreshToken은 쿠키에 담는다.
         int maxAge = 1_296_000; //15 * 24 * 60 * 60, 15일의 초(second)값
@@ -112,7 +112,7 @@ public class UserService {
         log.info("refreshToken: {}", refreshToken);
 
         JwtUser jwtUser = tokenProvider.getJwtUserFromToken(refreshToken);
-        return tokenProvider.generateToken(jwtUser, Duration.ofHours(8));
+        return tokenProvider.generateAccessToken(jwtUser);
     }
 
     public String patchUserPic(UserPicPatchReq p) {

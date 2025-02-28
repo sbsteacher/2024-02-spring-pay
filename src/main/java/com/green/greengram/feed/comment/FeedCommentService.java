@@ -1,7 +1,7 @@
 package com.green.greengram.feed.comment;
 
-import com.green.greengram.common.exception.CustomException;
-import com.green.greengram.common.exception.FeedErrorCode;
+import com.green.greengram.config.exception.CustomException;
+import com.green.greengram.config.exception.FeedErrorCode;
 import com.green.greengram.config.security.AuthenticationFacade;
 import com.green.greengram.entity.Feed;
 import com.green.greengram.entity.FeedComment;

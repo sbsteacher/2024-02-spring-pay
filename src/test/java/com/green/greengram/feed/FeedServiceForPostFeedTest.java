@@ -1,6 +1,6 @@
 package com.green.greengram.feed;
 
-import com.green.greengram.common.exception.CustomException;
+import com.green.greengram.config.exception.CustomException;
 import com.green.greengram.feed.model.FeedPicDto;
 import com.green.greengram.feed.model.FeedPostReq;
 import com.green.greengram.feed.model.FeedPostRes;

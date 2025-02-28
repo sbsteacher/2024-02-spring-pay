@@ -1,7 +1,7 @@
 package com.green.greengram.config.security.oauth;
 
-import com.green.greengram.common.CookieUtils;
-import com.green.greengram.common.GlobalOauth2;
+import com.green.greengram.config.CookieUtils;
+import com.green.greengram.config.constants.ConstOAuth2;
 import com.green.greengram.config.jwt.JwtUser;
 import com.green.greengram.config.jwt.TokenProvider;
 import com.green.greengram.config.security.MyUserDetails;
@@ -24,7 +24,7 @@ import java.time.Duration;
 public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final Oauth2AuthenticationRequestBasedOnCookieRepository repository;
     private final TokenProvider tokenProvider;
-    private final GlobalOauth2 globalOauth2;
+    private final ConstOAuth2 constOAuth2;
     private final CookieUtils cookieUtils;
 
     @Override
@@ -42,7 +42,7 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     @Override
     protected String determineTargetUrl(HttpServletRequest req, HttpServletResponse res, Authentication auth) {
-        String redirectUrl = cookieUtils.getValue(req, globalOauth2.getRedirectUriParamCookieName(), String.class);
+        String redirectUrl = cookieUtils.getValue(req, constOAuth2.getRedirectUriParamCookieName(), String.class);
 
         log.info("determineTargetUrl > getDefaultTargetUrl(): {}", getDefaultTargetUrl());
 
@@ -55,8 +55,8 @@ public class Oauth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         JwtUser jwtUser = new JwtUser(oAuth2JwtUser.getSignedUserId(), oAuth2JwtUser.getRoles());
 
         //AT, RT 생성
-        String accessToken = tokenProvider.generateToken(jwtUser, Duration.ofHours(8));
-        String refreshToken = tokenProvider.generateToken(jwtUser, Duration.ofDays(15));
+        String accessToken = tokenProvider.generateAccessToken(jwtUser);
+        String refreshToken = tokenProvider.generateRefreshToken(jwtUser);
 
         int maxAge = 1_296_000; //15 * 24 * 60 * 60, 15일의 초(second)값
         cookieUtils.setCookie(res, "refreshToken", refreshToken, maxAge, "/api/user/access-token");

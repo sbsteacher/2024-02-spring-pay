@@ -1,6 +1,6 @@
 package com.green.greengram.feed.like;
 
-import com.green.greengram.common.model.ResultResponse;
+import com.green.greengram.config.model.ResultResponse;
 import com.green.greengram.feed.like.model.FeedLikeReq;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

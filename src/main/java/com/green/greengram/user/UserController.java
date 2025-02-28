@@ -1,6 +1,6 @@
 package com.green.greengram.user;
 
-import com.green.greengram.common.model.ResultResponse;
+import com.green.greengram.config.model.ResultResponse;
 import com.green.greengram.user.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -77,8 +76,4 @@ public class UserController {
                 .build();
     }
 
-    @GetMapping("redirect")
-    public void redirect(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/");
-    }
 }
