@@ -2,7 +2,6 @@ package com.green.greengram.entity;
 
 import com.green.greengram.config.enumcode.AbstractEnumCodeConverter;
 import com.green.greengram.config.enumcode.EnumMapperType;
-import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
