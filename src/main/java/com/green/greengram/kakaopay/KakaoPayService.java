@@ -55,16 +55,22 @@ public class KakaoPayService {
                 .userId(authenticationFacade.getSignedUserId())
                 .build();
 
+        //OrderMaster 엔터티 객체화 ( 영속성이 없음 ) ----- (A)라고 호칭
         OrderMaster orderMaster = OrderMaster.builder()
                 .user(signedUser)
                 .totalAmount(totalAmount)
                 .orderStatusCode(OrderStatusCode.READY)
                 .build();
 
-        for(Product item : productList) {
+        log.info("orderMaster - orderId : {}", orderMaster.getOrderId()); //null로 예상
+
+        for(Product item : productList) { //DB에서 가져온 productList를 향상된 for문 처리
+            //OrderProduct 엔터티는 복합키로 구성, OrderProductIds 객체화 ---- (B)라고 호칭
             OrderProductIds ids = OrderProductIds.builder()
-                    .orderId(item.getProductId())
+                    .productId(item.getProductId()) //orderId를 값을 넣을 수 없다. 왜냐면 아직 (A)가 insert전이기 때문
                     .build();
+
+            //OrderProduct 엔터티 객체화 ( 영속성이 없음 ) ------ (C)라고 호칭
             OrderProduct orderProduct = OrderProduct.builder()
                     .ids(ids)
                     .product(item)
@@ -72,11 +78,11 @@ public class KakaoPayService {
                     .unitPrice(item.getProductPrice())
                     .build();
 
-            orderMaster.addOrderProduct(orderProduct);
+            orderMaster.addOrderProduct(orderProduct); //양방향 연결 (A), (C) 연결, A도 C를 알아야하고 C도 A를 알아야 합니다.
         }
 
         orderMasterRepository.save(orderMaster);
-
+        orderMasterRepository.flush();
         //결제 준비 단계
         /*
             AAA 상품만 산다고 했을 때 (상품 1개)
@@ -100,7 +106,7 @@ public class KakaoPayService {
                 .quantity(productList.size())
                 .totalAmount(totalAmount)
                 .taxFreeAmount(0)
-                .approvalUrl(constKakaoPay.getApprovalUrl())
+                .approvalUrl(constKakaoPay.getApprovalUrl()) //QR처리를 하면 리다이렉트되는 주소값
                 .failUrl(constKakaoPay.getFailUrl())
                 .cancelUrl(constKakaoPay.getCancelUrl())
                 .build();

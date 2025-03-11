@@ -22,6 +22,16 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        //URL 잡아낸다.
+        String url = request.getRequestURI();
+        if(url.equals("")) {
+            String token = request.getParameter("token");
+            if(token != null) {
+                Authentication auth = tokenProvider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+        }
+
         log.info("ip Address: {}", request.getRemoteAddr());
         String authorizationHeader = request.getHeader(HEADER_AUTHORIZATION);  //"Bearer 토큰값"
         log.info("authorizationHeader: {}", authorizationHeader);

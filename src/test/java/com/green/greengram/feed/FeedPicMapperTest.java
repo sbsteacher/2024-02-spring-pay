@@ -1,15 +1,15 @@
 package com.green.greengram.feed;
 
 import com.green.greengram.TestUtils;
+import com.green.greengram.config.JpaAuditingConfiguration;
 import com.green.greengram.feed.model.FeedPicDto;
-import com.green.greengram.feed.model.FeedPicSel;
 import com.green.greengram.feed.model.FeedPicVo;
-import net.bytebuddy.build.ToStringPlugin;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.MyBatisSystemException;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.context.annotation.Import;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.test.context.ActiveProfiles;

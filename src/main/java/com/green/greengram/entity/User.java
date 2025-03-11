@@ -40,7 +40,7 @@ public class User extends UpdatedAt {
     @Column(length = 50)
     private String pic;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<UserRole> userRoles = new ArrayList<>();
 
 }

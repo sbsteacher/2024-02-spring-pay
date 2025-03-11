@@ -16,7 +16,4 @@ public class FeedLikeReq {
     @Positive
     @Schema(title = "피드 PK", example = "2", requiredMode = Schema.RequiredMode.REQUIRED)
     private long feedId;
-    @JsonIgnore
-    @Positive
-    private long userId;
 }

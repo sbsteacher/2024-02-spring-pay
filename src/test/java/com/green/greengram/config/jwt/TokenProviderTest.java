@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnCheckpointRestore;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -13,6 +14,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/*
+    테스트 테이블 entity 생성
+
+ */
+
+@ActiveProfiles("test")
 @SpringBootTest //통합 테스트때 사용
 class TokenProviderTest {
     //테스트는 생성자를 이용한 DI가 불가능
@@ -34,8 +41,7 @@ class TokenProviderTest {
         jwtUser.setRoles(roles);
 
         //When (실행단계)
-        //String token = tokenProvider.generateToken(jwtUser, Duration.ofHours(3));
-        String token = null;
+        String token = tokenProvider.generateAccessToken(jwtUser);
 
         //Then (검증단계)
         assertNotNull(token);
@@ -47,7 +53,7 @@ class TokenProviderTest {
 
     @Test
     void getAuthentication() {
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJncmVlbkBncmVlbi5rciIsImlhdCI6MTczNDQwMjk4NiwiZXhwIjoxNzM0NDEzNzg2LCJzaWduZWRVc2VyIjoie1wic2lnbmVkVXNlcklkXCI6MTAsXCJyb2xlc1wiOltcIlJPTEVfVVNFUlwiLFwiUk9MRV9BRE1JTlwiXX0ifQ.CRtVju5f60KnCx9CLwIRahr72dZsSYH5G8K3EFDUFJ3GXAXULFA8ANVtI9kml8nIdW2ViPiV-kbL-Wc5EUqmkg"; //3시간 짜리
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJncmVlbkBncmVlbi5rciIsImlhdCI6MTc0MTY2NDIzNCwiZXhwIjoxNzQxNzUwNjM0LCJzaWduZWRVc2VyIjoie1wic2lnbmVkVXNlcklkXCI6MTAsXCJyb2xlc1wiOltcIlJPTEVfVVNFUlwiLFwiUk9MRV9BRE1JTlwiXX0ifQ.FO5sHWQ5dmtLK3fB9fFC6frpvyqpBOG3PRxDteBZtcE"; //3시간 짜리
 
         Authentication authentication = tokenProvider.getAuthentication(token);
 

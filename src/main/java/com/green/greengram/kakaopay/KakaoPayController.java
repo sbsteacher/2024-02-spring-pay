@@ -34,7 +34,8 @@ public class KakaoPayController {
 
     @GetMapping("approve")
     @Operation(summary = "카카오페이 결제승인 처리", description = "")
-    public ResultResponse<KakaoPayApproveRes> getApprove(@ParameterObject @ModelAttribute KakaoPayApproveReq req) throws IOException {
+    public ResultResponse<KakaoPayApproveRes> getApprove(@ParameterObject @ModelAttribute KakaoPayApproveReq req)
+            throws IOException {
         KakaoPayApproveRes res = kakaoPayService.getApprove(req);
         log.info("res: {}", res);
 

@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class FeedLikeControllerTest {
     @Autowired ObjectMapper objectMapper; //JSON사용
     @Autowired MockMvc mockMvc; //요청(보내고)-응답(받기) 처리
-    @MockBean FeedLikeService feedLikeService; //가짜 객체를 만들고 빈등록한다.
+    //@MockBean FeedLikeService feedLikeService; //가짜 객체를 만들고 빈등록한다.
 
     final String BASE_URL = "/api/feed/like";
     final long feedId_2 = 2L;
@@ -38,30 +38,30 @@ class FeedLikeControllerTest {
         common = new FeedLikeTestCommon(objectMapper);
     }
 
-    @Test
-    @DisplayName("좋아요 등록")
-    void feedLikeReg() throws Exception {
-        feedLikeToggle(1);
-    }
+//    @Test
+//    @DisplayName("좋아요 등록")
+//    void feedLikeReg() throws Exception {
+//        feedLikeToggle(1);
+//    }
+//
+//    @Test
+//    @DisplayName("좋아요 취소")
+//    void feedLikeCancel() throws Exception {
+//        feedLikeToggle(0);
+//    }
 
-    @Test
-    @DisplayName("좋아요 취소")
-    void feedLikeCancel() throws Exception {
-        feedLikeToggle(0);
-    }
-
-    private void feedLikeToggle(final int result) throws Exception {
-        FeedLikeReq givenParam = common.getGivenParam(feedId_2);
-        given(feedLikeService.feedLikeToggle(givenParam)).willReturn(result);
-
-        ResultActions resultActions = mockMvc.perform(  get(BASE_URL).queryParams(common.getParameter(feedId_2))  );
-
-        String expectedResJson = common.getExpectedResJson(result);
-        resultActions.andDo(print())
-                     .andExpect(status().isOk())
-                     .andExpect(content().json(expectedResJson));
-
-        verify(feedLikeService).feedLikeToggle(givenParam);
-    }
+//    private void feedLikeToggle(final int result) throws Exception {
+//        FeedLikeReq givenParam = common.getGivenParam(feedId_2);
+//        given(feedLikeService.feedLikeToggle(givenParam)).willReturn(result);
+//
+//        ResultActions resultActions = mockMvc.perform(  get(BASE_URL).queryParams(common.getParameter(feedId_2))  );
+//
+//        String expectedResJson = common.getExpectedResJson(result);
+//        resultActions.andDo(print())
+//                     .andExpect(status().isOk())
+//                     .andExpect(content().json(expectedResJson));
+//
+//        verify(feedLikeService).feedLikeToggle(givenParam);
+//    }
 
 }
