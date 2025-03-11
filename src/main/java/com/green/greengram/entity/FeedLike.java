@@ -8,6 +8,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class FeedLike extends CreatedAt {
     @EmbeddedId
     private FeedLikeIds feedLikeIds;
