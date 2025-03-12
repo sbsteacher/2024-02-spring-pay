@@ -19,26 +19,26 @@ public class FeedLikeService {
     private final AuthenticationFacade authenticationFacade;
 
     public int feedLikeToggle(Long feedId) {
-        //p.setUserId(authenticationFacade.getSignedUserId());
         FeedLikeIds ids = FeedLikeIds.builder()
-                .feedId(feedId)
-                .userId(authenticationFacade.getSignedUserId())
-                .build();
+                                     .feedId(feedId)
+                                     .userId(authenticationFacade.getSignedUserId())
+                                     .build();
+
         FeedLike feedLike = feedLikeRepository.findById(ids).orElse(null);
         if(feedLike == null) {
             Feed feed = Feed.builder()
-                    .feedId(feedId)
-                    .build();
+                            .feedId(feedId)
+                            .build();
 
             User user = User.builder()
-                    .userId(authenticationFacade.getSignedUserId())
-                    .build();
+                            .userId(authenticationFacade.getSignedUserId())
+                            .build();
 
             feedLike = FeedLike.builder()
-                    .feedLikeIds(ids)
-                    .feed(feed)
-                    .user(user)
-                    .build();
+                               .feedLikeIds(ids)
+                               .feed(feed)
+                               .user(user)
+                               .build();
 
             feedLikeRepository.save(feedLike);
             return 1; //좋아요 등록이 되었을 때 return 1

@@ -14,12 +14,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/*
-    테스트 테이블 entity 생성
 
- */
 
-@ActiveProfiles("test")
 @SpringBootTest //통합 테스트때 사용
 class TokenProviderTest {
     //테스트는 생성자를 이용한 DI가 불가능

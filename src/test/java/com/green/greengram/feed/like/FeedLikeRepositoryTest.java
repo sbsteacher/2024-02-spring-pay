@@ -27,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @Import(JpaAuditingConfiguration.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Sql(scripts = {"classpath:test-import.sql"})
 class FeedLikeRepositoryTest {
 
     @Autowired FeedLikeRepository feedLikeRepository;
