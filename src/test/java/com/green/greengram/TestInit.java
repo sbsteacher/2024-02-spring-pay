@@ -12,6 +12,7 @@ import org.springframework.test.context.jdbc.Sql;
  */
 @ActiveProfiles("test-init")
 @Rollback(false)
+//@SpringBootTest //엔터티 수정이 있을 때만 활성화
 @Sql(scripts = {"classpath:test-import.sql"})
 public class TestInit {
     @Test
