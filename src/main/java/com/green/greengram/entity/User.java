@@ -29,7 +29,7 @@ public class User extends UpdatedAt {
     @Column(nullable = false, length = 2)
     private SignInProviderType providerType;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 50)
     private String uid;
 
     @Column(nullable = false, length = 100)
@@ -38,7 +38,7 @@ public class User extends UpdatedAt {
     @Column(length = 30)
     private String nickName; //nick_name
 
-    @Column(length = 50)
+    @Column(length = 100)
     private String pic;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

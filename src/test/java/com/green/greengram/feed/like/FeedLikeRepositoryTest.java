@@ -14,6 +14,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,11 +33,7 @@ class FeedLikeRepositoryTest {
     final Long feedId_1 = 1L;
     final Long feedId_2 = 2L;
 
-    FeedLike existedData = FeedLike.builder()
-            .feedLikeIds(FeedLikeIds.builder().userId(userId_1).feedId(feedId_1).build())
-            .user(User.builder().userId(userId_1).build())
-            .feed(Feed.builder().feedId(feedId_1).build())
-            .build();
+    FeedLike existedData;
 
     FeedLike notExistedData = FeedLike.builder()
             .feedLikeIds(FeedLikeIds.builder().userId(userId_2).feedId(feedId_2).build())
@@ -45,6 +43,12 @@ class FeedLikeRepositoryTest {
 
     @BeforeEach
     void initData() {
+        existedData = FeedLike.builder()
+                .feedLikeIds(FeedLikeIds.builder().userId(userId_1).feedId(feedId_1).build())
+                .user(User.builder().userId(userId_1).build())
+                .feed(Feed.builder().feedId(feedId_1).build())
+                .build();
+
         feedLikeRepository.deleteAll();
         feedLikeRepository.save(existedData);
     }
@@ -57,6 +61,8 @@ class FeedLikeRepositoryTest {
 
     @Test
     void insFeedLike() {
+        FeedLike feedLike = new FeedLike();
+
         //when
         List<FeedLike> actualFeedLikeListBefore = feedLikeRepository.findAll(); //insert전 튜플 수 (expectedRows: 1)
         FeedLike actualFeedLikeBefore = feedLikeRepository.findById(FeedLikeIds.builder()

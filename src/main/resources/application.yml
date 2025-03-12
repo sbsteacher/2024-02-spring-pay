@@ -73,7 +73,7 @@ spring:
     database: mysql
     hibernate:
       #ddl-auto: create #entity를 서버 기동때마다 drop 후 create 한다.
-      ddl-auto: update #entity가 없으면 create, 기존 존재하는 entity는 컬럼을 새롭게 추가하는 것만 반영
+      ddl-auto: create #entity가 없으면 create, 기존 존재하는 entity는 컬럼을 새롭게 추가하는 것만 반영
     properties:
       hibernate:
         jdbc:
